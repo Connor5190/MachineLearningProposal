@@ -29,3 +29,233 @@ main {
   margin: 0 auto;
   padding: 2rem;
 }
+
+/* Report additions: Gantt Chart & Contribution Table */
+.report-additions {
+  margin-top: 2.5rem;
+}
+
+.section-intro {
+  font-weight: 500;
+  margin-bottom: 1.5rem;
+}
+
+.gantt-section,
+.contribution-section {
+  margin-bottom: 2.5rem;
+}
+
+.gantt-section h2,
+.contribution-section h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 0.5rem 0;
+}
+
+.gantt-section p,
+.contribution-section p {
+  margin: 0 0 1rem 0;
+  color: #555;
+}
+
+.gantt-chart {
+  overflow-x: auto;
+  border: 1px solid #d1d5db;
+}
+
+.gantt-table,
+.contribution-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+
+.gantt-table th,
+.gantt-table td,
+.contribution-table th,
+.contribution-table td {
+  border: 1px solid #d1d5db;
+  padding: 0.5rem 0.6rem;
+  text-align: left;
+  vertical-align: middle;
+}
+
+/* Gantt title row: "GANTT CHART" + PROJECT TITLE bar */
+.gantt-title-row td {
+  border-bottom: none;
+  padding: 0;
+  vertical-align: top;
+}
+
+.gantt-title-cell {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #2563eb;
+  letter-spacing: 0.02em;
+  padding: 0.5rem 0.75rem 0.25rem 0.75rem !important;
+  background: #fff;
+  width: 1%;
+  white-space: nowrap;
+}
+
+.gantt-project-cell {
+  background: #374151;
+  padding: 0.35rem 0.5rem !important;
+  vertical-align: middle;
+}
+
+.gantt-project-label {
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.75rem;
+  margin-right: 0.5rem;
+}
+
+.gantt-project-value {
+  background: #fff;
+  color: #111;
+  padding: 0.2rem 0.5rem;
+  font-size: 0.8125rem;
+}
+
+/* Table header row with timeline axis */
+.gantt-header-row th {
+  background: #e5e7eb;
+  font-weight: 600;
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.gantt-timeline-th {
+  position: relative;
+  min-width: 420px;
+  width: 55%;
+  padding: 0 !important;
+  vertical-align: bottom;
+}
+
+.timeline-axis {
+  padding: 0.35rem 0.5rem 0.25rem 0.5rem;
+  background: #e5e7eb;
+}
+
+.timeline-months {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.7rem;
+  font-weight: 600;
+  margin-bottom: 0.2rem;
+}
+
+.tmonth {
+  flex: 1;
+  text-align: center;
+  padding: 0.15rem 0;
+}
+
+.tmonth-jan,
+.tmonth-feb {
+  background: #bfdbfe;
+  color: #1e40af;
+}
+
+.tmonth-mar,
+.tmonth-apr {
+  background: #fed7aa;
+  color: #9a3412;
+}
+
+.tmonth-may {
+  background: #d1d5db;
+  color: #374151;
+}
+
+.timeline-days {
+  font-size: 0.6rem;
+  color: #6b7280;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+}
+
+/* Spring Break band (vertical bar in timeline header) */
+.gantt-timeline-th .spring-break-band {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 52%;
+  width: 16%;
+  background: #4b5563;
+  pointer-events: none;
+  z-index: 1;
+}
+
+.gantt-timeline-th .spring-break-label {
+  position: absolute;
+  top: 50%;
+  left: 60%;
+  transform: translate(-50%, -50%) rotate(-90deg);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: #fff;
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 2;
+}
+
+/* Task rows: phase headers and data */
+.gantt-table .phase-header td {
+  background: #e0e7ff;
+  font-weight: 700;
+  font-size: 0.8125rem;
+  padding: 0.4rem 0.6rem !important;
+  border-color: #c7d2fe;
+}
+
+.gantt-table tbody tr:not(.phase-header):nth-child(even) td:not(.gantt-bar-cell) {
+  background: #f9fafb;
+}
+
+.gantt-bar-cell {
+  position: relative;
+  min-width: 420px;
+  width: 55%;
+  padding: 0.25rem 0.5rem !important;
+  vertical-align: middle;
+  background: #fff;
+}
+
+.gantt-table tbody tr:not(.phase-header):nth-child(even) .gantt-bar-cell {
+  background: #f9fafb;
+}
+
+.gantt-bar-cell .gantt-bar {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 16px;
+  left: calc(var(--left) * 1%);
+  width: calc(var(--width) * 1%);
+  min-width: 3px;
+  border-radius: 2px;
+}
+
+.gantt-bar-cell .gantt-bar.bar-blue {
+  background: #3b82f6;
+}
+
+.gantt-bar-cell .gantt-bar.bar-orange {
+  background: #f97316;
+}
+
+.gantt-bar-cell .gantt-bar.bar-gray {
+  background: #6b7280;
+}
+
+.contribution-table th {
+  background-color: #f5f5f5;
+  font-weight: 600;
+}
+
+.contribution-table tbody tr:nth-child(even) {
+  background-color: #fafafa;
+}
