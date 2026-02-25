@@ -1,0 +1,31 @@
+/* Machine Learning Proposal - Styles */
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  color: #333;
+  background-color: #fff;
+}
+
+header {
+  padding: 1.5rem 2rem;
+  background-color: #f5f5f5;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+main {
+  max-width: 60rem;
+  margin: 0 auto;
+  padding: 2rem;
+}
