@@ -40,6 +40,102 @@ main {
   margin-bottom: 1.5rem;
 }
 
+.dataset-section {
+  margin-bottom: 2.5rem;
+}
+
+.dataset-section h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem 0;
+  color: #111;
+}
+
+.dataset-intro {
+  font-weight: 500;
+  margin-bottom: 0.75rem;
+}
+
+.dataset-link {
+  margin-bottom: 1rem !important;
+}
+
+.dataset-link a {
+  color: #2563eb;
+  text-decoration: none;
+}
+
+.dataset-link a:hover {
+  text-decoration: underline;
+}
+
+.dataset-section p {
+  margin: 0 0 0.5rem 0;
+  color: #333;
+}
+
+.dataset-section ul {
+  margin: 0 0 1rem 1.5rem;
+  padding: 0;
+}
+
+.dataset-section li {
+  margin-bottom: 0.35rem;
+}
+
+.dataset-section p:last-child {
+  margin-bottom: 0;
+}
+
+.problem-section {
+  margin-bottom: 2.5rem;
+}
+
+.problem-section h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem 0;
+  color: #111;
+}
+
+.problem-section p {
+  margin: 0 0 0.5rem 0;
+  color: #333;
+}
+
+.problem-section ul {
+  margin: 0 0 1rem 1.5rem;
+  padding: 0;
+}
+
+.problem-section li {
+  margin-bottom: 0.35rem;
+}
+
+.problem-section p:last-child {
+  margin-bottom: 0;
+}
+
+.motivation-section {
+  margin-bottom: 2.5rem;
+}
+
+.motivation-section h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem 0;
+  color: #111;
+}
+
+.motivation-section p {
+  margin: 0 0 0.75rem 0;
+  color: #333;
+}
+
+.motivation-section p:last-child {
+  margin-bottom: 0;
+}
+
 .gantt-section,
 .contribution-section {
   margin-bottom: 2.5rem;

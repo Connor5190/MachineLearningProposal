@@ -12,6 +12,53 @@
   </header>
   <main>
     <section class="report-additions">
+      <section class="dataset-section">
+        <h2>Dataset Description</h2>
+        <p class="dataset-intro">The UFC Dataset is a comprehensive mixed martial arts dataset containing every recorded UFC fight along with detailed fighter statistics.</p>
+        <p class="dataset-link"><strong>Dataset:</strong> <a href="https://www.kaggle.com/datasets/thasankakandage/ufc-dataset-2024?select=ufc_fighters.csv" target="_blank" rel="noopener noreferrer">Kaggle — UFC Dataset 2024</a></p>
+        <p>The dataset includes:</p>
+        <ul>
+          <li>Complete fight history for all UFC events</li>
+          <li>Fight-level statistics for both competitors in each bout</li>
+          <li>Fighter performance metrics at the time of each fight (e.g., strikes landed, takedowns, submissions, control time, etc.)</li>
+          <li>Event metadata such as event name and date</li>
+        </ul>
+        <p>In addition to historical fight data, the dataset also contains:</p>
+        <ul>
+          <li>A current roster of UFC fighters</li>
+          <li>Updated fighter profiles with their latest physical attributes and career records</li>
+          <li>Aggregated career statistics reflecting their most recent information</li>
+        </ul>
+        <p>This structure allows users to analyze:</p>
+        <ul>
+          <li>How fighter performance evolves over time</li>
+          <li>How pre-fight statistics relate to fight outcomes</li>
+          <li>Predictive modeling using stats available at the time of the fight</li>
+          <li>Current fighter comparisons based on up-to-date profile data</li>
+        </ul>
+        <p>Because it includes both historical fight-level data (time-specific stats) and a current snapshot of fighter profiles, the dataset supports longitudinal analysis as well as modern fighter evaluation and modeling.</p>
+      </section>
+
+      <section class="problem-section">
+        <h2>Problem Statement</h2>
+        <p>Mixed martial arts outcomes are influenced by a combination of fighter attributes, historical performance metrics, and matchup dynamics. Given a dataset containing every UFC fight along with each fighter's statistics at the time of their bout, the objective is to develop a predictive model that determines the probability of a fighter winning a future matchup.</p>
+        <p>Specifically, this project aims to:</p>
+        <ul>
+          <li>Utilize historical fight data and pre-fight fighter statistics</li>
+          <li>Engineer features that reflect performance trends and stylistic advantages</li>
+          <li>Train and evaluate a supervised machine learning model</li>
+          <li>Predict the likely winner of an upcoming UFC fight based solely on information available before the fight occurs</li>
+        </ul>
+        <p>The core challenge is to accurately model fight outcomes using only pre-fight data, ensuring the system reflects realistic, real-world prediction constraints.</p>
+      </section>
+
+      <section class="motivation-section">
+        <h2>Motivation</h2>
+        <p>We're a group of big sports fans and we regularly watch UFC events together. Half the fun for us is debating matchups before the fights start: who has the better striking, whose wrestling will hold up, whether reach or experience will make the difference, etc. We're always making predictions and arguing our cases like analysts.</p>
+        <p>This project is exciting for us because it takes something we already love doing and adds a data-driven layer to it. Instead of just going off gut feeling or fighter reputation, we want to see if the numbers actually back up our predictions. Can striking accuracy really predict outcomes? Does reach matter as much as we think? Do certain styles consistently win?</p>
+        <p>By building a model using real UFC fight data, we're essentially putting our fight-night debates to the test. It's a way to combine our interest in sports with machine learning and see if we can build something that's both analytical and fun.</p>
+      </section>
+
       <section class="gantt-section">
         <div class="gantt-chart">
           <table class="gantt-table">
