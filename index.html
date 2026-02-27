@@ -12,6 +12,13 @@
   </header>
   <main>
     <section class="report-additions">
+      <section class="literature-section">
+        <h2>Literature Review</h2>
+        <p>Louppe provides a theoretical and practical analysis of Random Forests, explaining how ensemble learning reduces variance and how impurity-based feature importance is computed [1]. This foundation supports the use of Random Forest in our MMA fight prediction model and guides how we interpret which pre-fight fighter attributes most influence predicted outcomes.</p>
+        <p>Strobl et al. demonstrate that standard Random Forest importance measures can be biased toward certain predictor types, particularly when variables differ in scale or category count [2]. This is important for our project because MMA data includes mixed feature types (e.g., age, reach, win streak), meaning importance results must be interpreted carefully.</p>
+        <p>He and Choi apply ensemble machine learning methods to sports outcome prediction and show that ensemble approaches can achieve strong predictive performance while maintaining interpretability through explanation techniques [3]. Their work reinforces the suitability of ensemble models like Random Forest for structured sports prediction tasks such as forecasting MMA fight outcomes.</p>
+      </section>
+
       <section class="dataset-section">
         <h2>Dataset Description</h2>
         <p class="dataset-intro">The UFC Dataset is a comprehensive mixed martial arts dataset containing every recorded UFC fight along with detailed fighter statistics.</p>
@@ -59,6 +66,21 @@
         <p>By building a model using real UFC fight data, we're essentially putting our fight-night debates to the test. It's a way to combine our interest in sports with machine learning and see if we can build something that's both analytical and fun.</p>
       </section>
 
+      <section class="preprocessing-section">
+        <h2>Data Preprocessing</h2>
+        <p>To prepare our dataset, we will implement three primary data processing methods. First, we will address missing values using the <code>SimpleImputer</code> class from scikit-learn. Features with excessive missing data will be dropped entirely, while missing essential physical metrics, such as reach, will be imputed using weight-class medians to preserve the integrity of our samples.</p>
+        <p>Second, we will perform structural feature engineering using <code>pandas.DataFrame</code> operations. Instead of using isolated individual statistics, we will transform the data into pairwise matchups by calculating relative differentials for each bout, such as differences in striking volume, takedown defense, and reach.</p>
+        <p>Third, to mitigate positional bias (i.e., learning a bias towards Fighter A) we will apply data symmetrization. We will duplicate every historical bout, swap the fighters' positions, multiply the differential features by negative one, and invert the target variable. Following this, we will apply feature scaling using scikit-learn’s <code>StandardScaler</code> to normalize variables with vastly different ranges, which is critical for consistent model training.</p>
+      </section>
+
+      <section class="ml-section">
+        <h2>Machine Learning Algorithms</h2>
+        <p>Because our goal is to predict a binary outcome, we will utilize three supervised classification algorithms. First, we will establish an interpretable baseline using <code>LogisticRegression</code> from scikit-learn. This linear model will effectively demonstrate the fundamental relationship between our engineered metric advantages and the probability of winning a bout.</p>
+        <p>Second, we will implement a <code>RandomForestClassifier</code> from scikit-learn. This ensemble bagging method constructs a multitude of independent decision trees. By averaging these uncorrelated trees, the Random Forest captures non-linear interactions between fighters' metrics while resisting the high variance common in sports datasets.</p>
+        <p>Third, our primary predictive model will be the <code>XGBClassifier</code> from the XGBoost library. This gradient boosting framework builds trees sequentially to correct residual errors from previous iterations. XGBoost includes built-in L1 and L2 regularization, making it highly effective at handling complex, stylistic matchups without overfitting our expanded dataset.</p>
+        <p>These selected models directly apply the course's concepts of supervised learning for predictive data analysis. Specifically, we will utilize linear classification for our baseline and advance to tree-based models for our primary predictions.</p>
+      </section>
+
       <section class="results-and-discussion">
         <h2>Results and Discussion</h2>
         <p>Our primary objective is to develop a predictive model that performs comparably to standard betting market favorites through a framework that prioritizes computational sustainability and transparency. To achieve this, we will utilize tree-based models such as XGBoost, Random Forest, and Logistic Regression. These architectures require significantly less GPU-time and electrical power than deep neural networks, ensuring the project remains environmentally efficient while offering superior interpretability.</p>
@@ -73,6 +95,15 @@
         <p>Our primary objective is to develop a predictive model that performs comparably to standard betting market favorites through a framework that prioritizes computational sustainability and transparency. To achieve this, we will utilize tree-based models such as XGBoost, Random Forest, and Logistic Regression. These architectures require significantly less GPU-time and electrical power than deep neural networks, ensuring the project remains environmentally efficient while offering superior interpretability.</p>
         <p>We expect that our model will achieve a classification accuracy in the 60% range, representing a statistically significant improvement over a random guess baseline. While this is slightly below the historical 65%-68% win rate of Vegas favorites, it's a competitive benchmark for our model relying exclusively on publicly available fighter metrics and historical match statistics.</p>
         
+      </section>
+
+      <section class="references-section">
+        <h2>References</h2>
+        <ol class="references-list">
+          <li>[1] G. Louppe, <em>Understanding Random Forests: From Theory to Practice</em>, arXiv:1407.7502, Jul. 2014. [Online]. Available: <a href="https://arxiv.org/abs/1407.7502" target="_blank" rel="noopener noreferrer">https://arxiv.org/abs/1407.7502</a></li>
+          <li>[2] C. Strobl, A.-L. Boulesteix, A. Zeileis, and T. Hothorn, “Bias in random forest variable importance measures: Illustrations, sources and a solution,” <em>BMC Bioinformatics</em>, vol. 8, no. 25, 2007, doi: 10.1186/1471-2105-8-25.</li>
+          <li>[3] Y. He and J. Choi, “Stacked ensemble model for NBA game outcome prediction,” <em>Scientific Reports</em>, vol. 15, 2025, doi: 10.1038/s41598-025-13657-1.</li>
+        </ol>
       </section>
 
       <section class="gantt-section">

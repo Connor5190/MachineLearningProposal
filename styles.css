@@ -136,6 +136,41 @@ main {
   margin-bottom: 0;
 }
 
+.literature-section {
+  margin-bottom: 2.5rem;
+}
+
+.literature-section h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem 0;
+  color: #111;
+}
+
+.literature-section p {
+  margin: 0 0 0.5rem 0;
+  color: #333;
+}
+
+.preprocessing-section,
+.ml-section {
+  margin-bottom: 2.5rem;
+}
+
+.preprocessing-section h2,
+.ml-section h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem 0;
+  color: #111;
+}
+
+.preprocessing-section p,
+.ml-section p {
+  margin: 0 0 0.5rem 0;
+  color: #333;
+}
+
 .gantt-section,
 .contribution-section {
   margin-bottom: 2.5rem;
@@ -354,4 +389,26 @@ main {
 
 .contribution-table tbody tr:nth-child(even) {
   background-color: #fafafa;
+}
+
+.references-section {
+  margin-top: 2.5rem;
+}
+
+.references-section h2 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin: 0 0 0.75rem 0;
+  color: #111;
+}
+
+.references-list {
+  margin: 0;
+  padding-left: 1.5rem;
+  font-size: 0.85rem;
+}
+
+.references-list li {
+  margin-bottom: 0.5rem;
+  line-height: 1.5;
 }
