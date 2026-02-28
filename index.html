@@ -13,81 +13,77 @@
   <main>
     <section class="report-additions">
       <section class="literature-section">
-    <h2>Literature Review</h2>
-    <p>Louppe provides a theoretical and practical analysis of Random Forests, explaining how ensemble learning reduces variance and how impurity-based feature importance is computed [1], supporting our use of Random Forest and guiding interpretation of influential attributes. Strobl et al. show that standard Random Forest importance measures can be biased toward certain predictor types, especially when variables differ in scale or category count [2], which is important given our mixed feature types. He and Choi demonstrate that ensemble machine learning methods for sports outcome prediction can achieve strong predictive performance while maintaining interpretability [3], reinforcing the suitability of ensemble models like Random Forest for our task.</p>
-  </section>
+  <h2>Literature Review</h2>
+  <p>Louppe provides a theoretical and practical analysis of Random Forests, explaining how ensemble learning reduces variance and how impurity-based feature importance is computed [1], supporting our use of Random Forest and guiding interpretation of influential attributes. Strobl et al. show that standard Random Forest importance measures can be biased toward certain predictor types, especially when variables differ in scale or category count [2], which is important given our mixed feature types. He and Choi demonstrate that ensemble machine learning methods for sports outcome prediction can achieve strong predictive performance while maintaining interpretability [3], reinforcing the suitability of ensemble models like Random Forest for our task.</p>
+</section>
 
-  <section class="dataset-section">
-    <h2>Dataset Description</h2>
-    <p class="dataset-intro">The UFC Dataset is a comprehensive MMA dataset containing every recorded UFC fight along with detailed fighter statistics.</p>
-    <p><strong>Dataset:</strong> Kaggle — UFC Dataset 2026</p>
+<section class="dataset-section">
+  <h2>Dataset Description</h2>
+  <p class="dataset-intro">The UFC Dataset is a comprehensive MMA dataset containing every recorded UFC fight along with detailed fighter statistics.</p>
+  <p><strong>Dataset:</strong> Kaggle — UFC Dataset 2024</p>
 
-    <p>The dataset includes:</p>
-    <ul>
-      <li>Complete fight history for all UFC events</li>
-      <li>Fight-level statistics for both competitors in each bout</li>
-      <li>Fighter performance metrics at the time of each fight (e.g., strikes landed, takedowns, submissions, control time, etc.)</li>
-      <li>Event metadata such as event name and date</li>
-      <li>A current roster of UFC fighters</li>
-      <li>Updated fighter profiles with their physical attributes and career records</li>
-      <li>Aggregated career statistics reflecting their most recent information</li>
-    </ul>
+  <p>The dataset includes:</p>
+  <ul>
+    <li>Complete fight history for all UFC events</li>
+    <li>Fight-level statistics for both competitors in each bout</li>
+    <li>Fighter performance metrics at the time of each fight (e.g., strikes landed, takedowns, submissions)</li>
+    <li>Fighter profiles with physical attributes and career records</li>
+    <li>Aggregated career statistics reflecting most recent information</li>
+  </ul>
 
-    <p>This will allows us to analyze:</p>
-    <ul>
-      <li>How pre-fight statistics relate to fight outcomes</li>
-      <li>Predictive modeling using stats available at the time of the fight</li>
-      <li>Current fighter comparisons based on up-to-date profile data</li>
-    </ul>
+  <p>This allows us to analyze:</p>
+  <ul>
+    <li>How pre-fight statistics relate to fight outcomes</li>
+    <li>Predictive modeling using stats available at the time of the fight</li>
+    <li>Current fighter comparisons based on up-to-date profile data</li>
+  </ul>
 
-    <p>Because it includes both historical fight-level data and a current snapshot of fighter profiles, the dataset supports the analysis we are looking to achieve.</p>
-  </section>
+  <p>Because it includes historical fight-level data and a current snapshot of fighter profiles, the dataset supports the analysis we are looking to achieve.</p>
+</section>
 
-  <section class="problem-section">
-    <h2>Problem Statement</h2>
-    <p>Mixed martial arts outcomes are influenced by a combination of fighter attributes, historical performance metrics, and matchup dynamics. Given a dataset containing every UFC fight along with each fighter's statistics at the time of their bout, the objective is to develop a predictive model that determines the probability of a fighter winning a future matchup.</p>
+<section class="problem-section">
+  <h2>Problem Statement</h2>
+  <p>MMA outcomes are influenced by fighter attributes, historical performance metrics, and matchup dynamics. We believe we can develop a predictive model that can forecast the probability a fighter will win a future matchup using UFC fight data.</p>
 
-    <p>Specifically, this project aims to:</p>
-    <ul>
-      <li>Engineer features that reflect performance trends and stylistic advantages</li>
-      <li>Train and evaluate a supervised machine learning model</li>
-      <li>Predict the likely winner of an upcoming UFC fight based solely on information available before the fight occurs</li>
-    </ul>
+  <p>Specifically, this project aims to:</p>
+  <ul>
+    <li>Engineer features that reflect performance trends and stylistic advantages</li>
+    <li>Train and evaluate a supervised machine learning model</li>
+    <li>Predict the likely winner of an upcoming UFC fight based solely on information available before the fight occurs</li>
+  </ul>
 
-    <p>The main challenge is to accurately model fight outcomes using only pre-fight data, ensuring the system reflects realistic, real-world prediction constraints.</p>
-  </section>
+  <p>The main challenge is to model fight outcomes using only pre-fight data, ensuring the system reflects realistic prediction constraints.</p>
+</section>
 
-  <section class="motivation-section">
-    <h2>Motivation</h2>
-    <p>We're a group of sports fans who regularly watch UFC events together. Half the fun is debating the fights before they start: who has the better striking, whose grappling will hold up, and whether reach or experience will make the difference. We’re always making predictions and arguing our cases like professionals. This project is exciting because it adds a data-driven layer to something we already love. Instead of going off gut feeling or reputation, we want to see if the numbers back up our predictions. Can striking accuracy predict outcomes? Does reach matter as much as we think? Do certain styles consistently win? By building a model using real UFC data, we’re putting our fight-night debates to the test and combining our interest in sports with machine learning in a way that’s both analytical and fun.</p>
-  </section>
+<section class="motivation-section">
+  <h2>Motivation</h2>
+  <p>We’re a group of sports fans who regularly watch UFC events. Half the fun is debating the fights before they start: who has the better striking, whose grappling will hold up, and whether reach or experience will make the difference. We’re always making predictions and arguing our cases like professionals. This project adds a data-driven layer to something we already love. Instead of going off gut feeling or reputation, we want to see if the numbers back up our predictions. Can striking accuracy predict outcomes? Does reach matter as much as we think? Do certain styles consistently win? By building a model using real UFC data, we’re putting our fight-night debates to the test and combining our interest in sports with machine learning in a way that’s analytical and fun.</p>
+</section>
 
-  <section class="preprocessing-section">
-    <h2>Data Preprocessing</h2>
-    <p>We will address missing values with scikit-learn's SimpleImputer, dropping features with many missing fields and imputing medians for essential metrics to preserve sample integrity. We will use pandas.DataFrame operations for feature engineering, transforming the data into pairwise matchups and calculating relative differentials such as striking volume, takedown defense, and reach. To mitigate positional bias, we will symmetrize the data by duplicating each fight, swapping fighters, multiplying differential features by -1, and inverting the target variable. We will normalize variables with widely different ranges using StandardScaler for consistency in training.</p>
-  </section>
+<section class="preprocessing-section">
+  <h2>Data Preprocessing</h2>
+  <p>We will address missing values with scikit-learn’s SimpleImputer, dropping features with many missing fields and imputing medians for essential metrics to preserve sample integrity. We will use pandas.DataFrame operations for feature engineering, transforming the data into pairwise matchups and calculating differentials such as striking volume, takedown defense, and reach. To mitigate positional bias, we will symmetrize the data by duplicating each fight, swapping fighters, multiplying differential features by -1, and inverting the target variable. We will normalize variables with widely different ranges using StandardScaler for consistency in training.</p>
+</section>
 
-  <section class="ml-section">
-    <h2>Machine Learning Algorithms</h2>
-    <p>We will use three supervised classification algorithms to predict a binary outcome. LogisticRegression will provide an interpretable baseline. RandomForestClassifier will train multiple decision trees on different subsets of data, using majority voting to predict the winner. Our main model, XGBClassifier, builds trees sequentially to correct prior errors and applies L1 and L2 regularization to control complexity and improve performance. We apply supervised learning for predictive analytics, using linear classification as a baseline and tree-based models for final predictions</p>
-  </section>
+<section class="ml-section">
+  <h2>Machine Learning Algorithms</h2>
+  <p>We will use three supervised algorithms to predict a binary outcome. LogisticRegression will provide an interpretable baseline. RandomForestClassifier will train multiple decision trees on different subsets of data using majority voting to predict the winner. Our main model, XGBClassifier, builds trees sequentially to correct prior errors and applies L1 and L2 regularization to control complexity and improve performance. We apply supervised learning for predictive analytics, using linear classification as a baseline and tree-based models for final predictions.</p>
+</section>
 
-  <section class="results-and-discussion">
-    <h2>Results and Discussion</h2>
-    <p>To evaluate our prediction model, we will use quantitative metrics for various targets: binary outcomes, probabilistic odds, and specific fight endings.</p>
+<section class="results-and-discussion">
+  <h2>Results and Discussion</h2>
+  <p>To evaluate our prediction model, we will use quantitative metrics for binary outcomes, probabilistic odds, and specific fight endings.</p>
 
-    <ul>
-      <li><strong>Binary Winner/Loser:</strong> We will evaluate win/loss predictions using accuracy (Total Correct / Total Predictions). This simple metric provides an effective baseline to ensure the model functions correctly.</li>
+  <ul>
+    <li><strong>Binary Winner/Loser:</strong> Evaluate win/loss predictions using accuracy (Total Correct / Total Predictions) as a baseline.</li>
+    <li><strong>Winning Probability Projections:</strong> Use Brier Score and Log Loss to assess probability calibration against true outcomes and benchmark against closing odds.</li>
+    <li><strong>Method and Timing of Victory:</strong> Apply Mean Absolute Error to predicted finish times and Root Mean Squared Error to projected decision scorecards.</li>
+  </ul>
 
-      <li><strong>Winning Probability Projections:</strong> We will use Brier Score and Log Loss to evaluate model calibration by comparing projected probabilities to the ground truth. Brier Score measures the mean squared difference from the true outcome, while Log Loss heavily penalizes overconfident, incorrect predictions. We will benchmark these scores against official closing odds.</li>
+  <p>Our primary goal is to develop a UFC prediction model that performs comparable to betting market favorites. We will utilize tree models like XGBoost, Random Forest, and Logistic Regression. These algorithms require less computing power than neural nets, ensuring we remain environmentally conscious.</p>
 
-      <li><strong>Method and Timing of Victory:</strong> If a fight ends via knockout or submission, we will apply Mean Absolute Error to the predicted fight duration. For decisions, we will use Root Mean Squared Error to measure the variance between our projected and the true scorecards.</li>
-    </ul>
-
-    <p>Our primary goal in this project is to develop a UFC prediction model that performs comparable to betting market favorites. In this project, we will utilize tree models like XGBoost, Random Forest, and Logistic Regression. These algorithms require significantly less computing power than other models like neural nets, ensuring we remain environmentally conscious.</p>
-
-    <p>We expect that we will achieve an accuracy of at least 60%, which would be an improvement over a random guess baseline. Although this is below the 65%-68% win rate of Vegas favorites, we believe it’s still competitive for our model relying exclusively on publicly available fighting metrics and match stats.</p>
-  </section>
+  <p>We expect to achieve an accuracy of at least 60%, an improvement over a random guess baseline. Although this is below the 65%-68% win rate of Vegas favorites, we believe it’s competitive for a model relying exclusively on publicly available fighting metrics and match stats.</p>
+</section>
 
       <section class="references-section">
         <h2>References</h2>
@@ -118,11 +114,11 @@
                 <th class="gantt-timeline-th">
                   <div class="timeline-axis">
                     <div class="timeline-months">
-                      <span class="tmonth tmonth-jan">Jan-26</span>
-                      <span class="tmonth tmonth-feb">Feb-26</span>
-                      <span class="tmonth tmonth-mar">Mar-26</span>
-                      <span class="tmonth tmonth-apr">Apr-26</span>
-                      <span class="tmonth tmonth-may">May-26</span>
+                      <span class="tmonth tmonth-jan">Jan-24</span>
+                      <span class="tmonth tmonth-feb">Feb-24</span>
+                      <span class="tmonth tmonth-mar">Mar-24</span>
+                      <span class="tmonth tmonth-apr">Apr-24</span>
+                      <span class="tmonth tmonth-may">May-24</span>
                     </div>
                     <div class="timeline-days">M T W T F S S M T W T F S S M T W T F S S M T W T F S S M T W T F S S</div>
                   </div>
@@ -133,40 +129,40 @@
             </thead>
             <tbody>
               <tr class="phase-header"><td colspan="5">Project Proposal</td><td class="gantt-bar-cell"></td></tr>
-              <tr><td>Project Team Composition</td><td>All</td><td>1/17/26</td><td>2/2/26</td><td>15</td><td class="gantt-bar-cell"><span class="gantt-bar bar-blue" style="--left: 12.3; --width: 11.6;"></span></td></tr>
-              <tr><td>Project Proposal</td><td>Person A &amp; B</td><td>1/1/26</td><td>2/23/26</td><td>54</td><td class="gantt-bar-cell"><span class="gantt-bar bar-blue" style="--left: 0; --width: 38.4;"></span></td></tr>
-              <tr><td>Introduction &amp; Background</td><td>John Tillman</td><td>2/2/26</td><td>2/23/26</td><td>21</td><td class="gantt-bar-cell"><span class="gantt-bar bar-blue" style="--left: 23.2; --width: 15.2;"></span></td></tr>
-              <tr><td>Problem Definition</td><td>Max Pargman</td><td>2/2/26</td><td>2/23/26</td><td>21</td><td class="gantt-bar-cell"><span class="gantt-bar bar-blue" style="--left: 23.2; --width: 15.2;"></span></td></tr>
-              <tr><td>Methods</td><td>Connor Mcilhinney &amp; Andrew Mattei</td><td>2/2/26</td><td>2/23/26</td><td>21</td><td class="gantt-bar-cell"><span class="gantt-bar bar-blue" style="--left: 23.2; --width: 15.2;"></span></td></tr>
-              <tr><td>Potential Datasets</td><td>Connor Mcilhinney &amp; Andrew Mattei</td><td>2/2/26</td><td>2/23/26</td><td>21</td><td class="gantt-bar-cell"><span class="gantt-bar bar-blue" style="--left: 23.2; --width: 15.2;"></span></td></tr>
-              <tr><td>Potential Results &amp; Discussion</td><td>Rajan Kadaba</td><td>2/2/26</td><td>2/23/26</td><td>21</td><td class="gantt-bar-cell"><span class="gantt-bar bar-blue" style="--left: 23.2; --width: 15.2;"></span></td></tr>
-              <tr><td>Video Creation &amp; Recording</td><td>All</td><td>2/10/26</td><td>2/23/26</td><td>13</td><td class="gantt-bar-cell"><span class="gantt-bar bar-blue" style="--left: 29.0; --width: 9.4;"></span></td></tr>
-              <tr><td>Code Repo</td><td>Connor Mcilhinney</td><td>2/10/26</td><td>2/23/26</td><td>13</td><td class="gantt-bar-cell"><span class="gantt-bar bar-blue" style="--left: 29.0; --width: 9.4;"></span></td></tr>
+              <tr><td>Project Team Composition</td><td>All</td><td>1/17/24</td><td>2/2/24</td><td>15</td><td class="gantt-bar-cell"><span class="gantt-bar bar-blue" style="--left: 12.3; --width: 11.6;"></span></td></tr>
+              <tr><td>Project Proposal</td><td>Person A &amp; B</td><td>1/1/24</td><td>2/23/24</td><td>54</td><td class="gantt-bar-cell"><span class="gantt-bar bar-blue" style="--left: 0; --width: 38.4;"></span></td></tr>
+              <tr><td>Introduction &amp; Background</td><td>John Tillman</td><td>2/2/24</td><td>2/23/24</td><td>21</td><td class="gantt-bar-cell"><span class="gantt-bar bar-blue" style="--left: 23.2; --width: 15.2;"></span></td></tr>
+              <tr><td>Problem Definition</td><td>Max Pargman</td><td>2/2/24</td><td>2/23/24</td><td>21</td><td class="gantt-bar-cell"><span class="gantt-bar bar-blue" style="--left: 23.2; --width: 15.2;"></span></td></tr>
+              <tr><td>Methods</td><td>Connor Mcilhinney &amp; Andrew Mattei</td><td>2/2/24</td><td>2/23/24</td><td>21</td><td class="gantt-bar-cell"><span class="gantt-bar bar-blue" style="--left: 23.2; --width: 15.2;"></span></td></tr>
+              <tr><td>Potential Datasets</td><td>Connor Mcilhinney &amp; Andrew Mattei</td><td>2/2/24</td><td>2/23/24</td><td>21</td><td class="gantt-bar-cell"><span class="gantt-bar bar-blue" style="--left: 23.2; --width: 15.2;"></span></td></tr>
+              <tr><td>Potential Results &amp; Discussion</td><td>Rajan Kadaba</td><td>2/2/24</td><td>2/23/24</td><td>21</td><td class="gantt-bar-cell"><span class="gantt-bar bar-blue" style="--left: 23.2; --width: 15.2;"></span></td></tr>
+              <tr><td>Video Creation &amp; Recording</td><td>All</td><td>2/10/24</td><td>2/23/24</td><td>13</td><td class="gantt-bar-cell"><span class="gantt-bar bar-blue" style="--left: 29.0; --width: 9.4;"></span></td></tr>
+              <tr><td>Code Repo</td><td>Connor Mcilhinney</td><td>2/10/24</td><td>2/23/24</td><td>13</td><td class="gantt-bar-cell"><span class="gantt-bar bar-blue" style="--left: 29.0; --width: 9.4;"></span></td></tr>
               <tr class="phase-header"><td colspan="5">Midterm Report</td><td class="gantt-bar-cell"></td></tr>
-              <tr><td>Model 1 (M1) Design &amp; Selection</td><td>Person 1, 2 &amp; 3</td><td>2/17/26</td><td>2/27/26</td><td>10</td><td class="gantt-bar-cell"><span class="gantt-bar bar-orange" style="--left: 33.3; --width: 7.2;"></span></td></tr>
-              <tr><td>M1 Data Cleaning</td><td>Person 1</td><td>2/17/26</td><td>2/27/26</td><td>10</td><td class="gantt-bar-cell"><span class="gantt-bar bar-orange" style="--left: 33.3; --width: 7.2;"></span></td></tr>
-              <tr><td>M1 Data Visualization</td><td>Person 2</td><td>2/17/26</td><td>2/27/26</td><td>10</td><td class="gantt-bar-cell"><span class="gantt-bar bar-orange" style="--left: 33.3; --width: 7.2;"></span></td></tr>
-              <tr><td>M1 Feature Reduction</td><td>Person 3</td><td>2/17/26</td><td>2/27/26</td><td>10</td><td class="gantt-bar-cell"><span class="gantt-bar bar-orange" style="--left: 33.3; --width: 7.2;"></span></td></tr>
-              <tr><td>M1 Implementation &amp; Coding</td><td>Person 4</td><td>2/28/26</td><td>3/17/26</td><td>19</td><td class="gantt-bar-cell"><span class="gantt-bar bar-orange" style="--left: 41.3; --width: 13.8;"></span></td></tr>
-              <tr><td>M1 Results Evaluation</td><td>All</td><td>3/18/26</td><td>3/20/26</td><td>2</td><td class="gantt-bar-cell"><span class="gantt-bar bar-orange" style="--left: 55.8; --width: 1.4;"></span></td></tr>
-              <tr><td>Model 2 (M2) Design &amp; Selection</td><td>Person 1, 2 &amp; 3</td><td>2/28/26</td><td>3/6/26</td><td>8</td><td class="gantt-bar-cell"><span class="gantt-bar bar-orange" style="--left: 41.3; --width: 5.8;"></span></td></tr>
-              <tr><td>M2 Data Cleaning</td><td>Person 1</td><td>2/28/26</td><td>3/6/26</td><td>8</td><td class="gantt-bar-cell"><span class="gantt-bar bar-orange" style="--left: 41.3; --width: 5.8;"></span></td></tr>
-              <tr><td>M2 Data Visualization</td><td>Person 2</td><td>2/28/26</td><td>3/6/26</td><td>8</td><td class="gantt-bar-cell"><span class="gantt-bar bar-orange" style="--left: 41.3; --width: 5.8;"></span></td></tr>
-              <tr><td>M2 Feature Reduction</td><td>Person 3</td><td>2/28/26</td><td>3/6/26</td><td>8</td><td class="gantt-bar-cell"><span class="gantt-bar bar-orange" style="--left: 41.3; --width: 5.8;"></span></td></tr>
-              <tr><td>M2 Implementation &amp; Coding</td><td>Person 5</td><td>3/7/26</td><td>3/17/26</td><td>10</td><td class="gantt-bar-cell"><span class="gantt-bar bar-orange" style="--left: 47.8; --width: 7.2;"></span></td></tr>
-              <tr><td>M2 Results Evaluation</td><td>All</td><td>3/18/26</td><td>3/20/26</td><td>2</td><td class="gantt-bar-cell"><span class="gantt-bar bar-orange" style="--left: 55.8; --width: 1.4;"></span></td></tr>
-              <tr><td>Midterm Report</td><td>All</td><td>3/28/26</td><td>3/29/26</td><td>1</td><td class="gantt-bar-cell"><span class="gantt-bar bar-orange" style="--left: 63.0; --width: 0.7;"></span></td></tr>
+              <tr><td>Model 1 (M1) Design &amp; Selection</td><td>Person 1, 2 &amp; 3</td><td>2/17/24</td><td>2/27/24</td><td>10</td><td class="gantt-bar-cell"><span class="gantt-bar bar-orange" style="--left: 33.3; --width: 7.2;"></span></td></tr>
+              <tr><td>M1 Data Cleaning</td><td>Person 1</td><td>2/17/24</td><td>2/27/24</td><td>10</td><td class="gantt-bar-cell"><span class="gantt-bar bar-orange" style="--left: 33.3; --width: 7.2;"></span></td></tr>
+              <tr><td>M1 Data Visualization</td><td>Person 2</td><td>2/17/24</td><td>2/27/24</td><td>10</td><td class="gantt-bar-cell"><span class="gantt-bar bar-orange" style="--left: 33.3; --width: 7.2;"></span></td></tr>
+              <tr><td>M1 Feature Reduction</td><td>Person 3</td><td>2/17/24</td><td>2/27/24</td><td>10</td><td class="gantt-bar-cell"><span class="gantt-bar bar-orange" style="--left: 33.3; --width: 7.2;"></span></td></tr>
+              <tr><td>M1 Implementation &amp; Coding</td><td>Person 4</td><td>2/28/24</td><td>3/17/24</td><td>19</td><td class="gantt-bar-cell"><span class="gantt-bar bar-orange" style="--left: 41.3; --width: 13.8;"></span></td></tr>
+              <tr><td>M1 Results Evaluation</td><td>All</td><td>3/18/24</td><td>3/20/24</td><td>2</td><td class="gantt-bar-cell"><span class="gantt-bar bar-orange" style="--left: 55.8; --width: 1.4;"></span></td></tr>
+              <tr><td>Model 2 (M2) Design &amp; Selection</td><td>Person 1, 2 &amp; 3</td><td>2/28/24</td><td>3/6/24</td><td>8</td><td class="gantt-bar-cell"><span class="gantt-bar bar-orange" style="--left: 41.3; --width: 5.8;"></span></td></tr>
+              <tr><td>M2 Data Cleaning</td><td>Person 1</td><td>2/28/24</td><td>3/6/24</td><td>8</td><td class="gantt-bar-cell"><span class="gantt-bar bar-orange" style="--left: 41.3; --width: 5.8;"></span></td></tr>
+              <tr><td>M2 Data Visualization</td><td>Person 2</td><td>2/28/24</td><td>3/6/24</td><td>8</td><td class="gantt-bar-cell"><span class="gantt-bar bar-orange" style="--left: 41.3; --width: 5.8;"></span></td></tr>
+              <tr><td>M2 Feature Reduction</td><td>Person 3</td><td>2/28/24</td><td>3/6/24</td><td>8</td><td class="gantt-bar-cell"><span class="gantt-bar bar-orange" style="--left: 41.3; --width: 5.8;"></span></td></tr>
+              <tr><td>M2 Implementation &amp; Coding</td><td>Person 5</td><td>3/7/24</td><td>3/17/24</td><td>10</td><td class="gantt-bar-cell"><span class="gantt-bar bar-orange" style="--left: 47.8; --width: 7.2;"></span></td></tr>
+              <tr><td>M2 Results Evaluation</td><td>All</td><td>3/18/24</td><td>3/20/24</td><td>2</td><td class="gantt-bar-cell"><span class="gantt-bar bar-orange" style="--left: 55.8; --width: 1.4;"></span></td></tr>
+              <tr><td>Midterm Report</td><td>All</td><td>3/28/24</td><td>3/29/24</td><td>1</td><td class="gantt-bar-cell"><span class="gantt-bar bar-orange" style="--left: 63.0; --width: 0.7;"></span></td></tr>
               <tr class="phase-header"><td colspan="5">Final Report</td><td class="gantt-bar-cell"></td></tr>
-              <tr><td>Model 3 (M3) Design &amp; Selection</td><td>Person 1, 2 &amp; 3</td><td>3/14/26</td><td>3/20/26</td><td>6</td><td class="gantt-bar-cell"><span class="gantt-bar bar-gray" style="--left: 52.9; --width: 4.3;"></span></td></tr>
-              <tr><td>M3 Data Cleaning</td><td>Person 1</td><td>3/14/26</td><td>3/20/26</td><td>6</td><td class="gantt-bar-cell"><span class="gantt-bar bar-gray" style="--left: 52.9; --width: 4.3;"></span></td></tr>
-              <tr><td>M3 Data Visualization</td><td>Person 2</td><td>3/14/26</td><td>3/20/26</td><td>6</td><td class="gantt-bar-cell"><span class="gantt-bar bar-gray" style="--left: 52.9; --width: 4.3;"></span></td></tr>
-              <tr><td>M3 Feature Reduction</td><td>Person 3</td><td>3/14/26</td><td>3/20/26</td><td>6</td><td class="gantt-bar-cell"><span class="gantt-bar bar-gray" style="--left: 52.9; --width: 4.3;"></span></td></tr>
-              <tr><td>M3 Implementation &amp; Coding</td><td>Person 4</td><td>4/6/26</td><td>4/14/26</td><td>8</td><td class="gantt-bar-cell"><span class="gantt-bar bar-gray" style="--left: 69.6; --width: 5.8;"></span></td></tr>
-              <tr><td>M3 Results Evaluation</td><td>All</td><td>4/15/26</td><td>4/17/26</td><td>2</td><td class="gantt-bar-cell"><span class="gantt-bar bar-gray" style="--left: 76.1; --width: 1.4;"></span></td></tr>
-              <tr><td>M1–M3 Comparison</td><td>All</td><td>4/18/26</td><td>4/26/26</td><td>8</td><td class="gantt-bar-cell"><span class="gantt-bar bar-gray" style="--left: 78.3; --width: 5.8;"></span></td></tr>
-              <tr><td>Video Creation &amp; Recording</td><td>All</td><td>4/18/26</td><td>4/26/26</td><td>8</td><td class="gantt-bar-cell"><span class="gantt-bar bar-gray" style="--left: 78.3; --width: 5.8;"></span></td></tr>
-              <tr><td>Code Repo</td><td>All</td><td>4/18/26</td><td>4/26/26</td><td>8</td><td class="gantt-bar-cell"><span class="gantt-bar bar-gray" style="--left: 78.3; --width: 5.8;"></span></td></tr>
-              <tr><td>Final Report</td><td>All</td><td>4/18/26</td><td>5/17/26</td><td>30</td><td class="gantt-bar-cell"><span class="gantt-bar bar-gray" style="--left: 78.3; --width: 21.7;"></span></td></tr>
+              <tr><td>Model 3 (M3) Design &amp; Selection</td><td>Person 1, 2 &amp; 3</td><td>3/14/24</td><td>3/20/24</td><td>6</td><td class="gantt-bar-cell"><span class="gantt-bar bar-gray" style="--left: 52.9; --width: 4.3;"></span></td></tr>
+              <tr><td>M3 Data Cleaning</td><td>Person 1</td><td>3/14/24</td><td>3/20/24</td><td>6</td><td class="gantt-bar-cell"><span class="gantt-bar bar-gray" style="--left: 52.9; --width: 4.3;"></span></td></tr>
+              <tr><td>M3 Data Visualization</td><td>Person 2</td><td>3/14/24</td><td>3/20/24</td><td>6</td><td class="gantt-bar-cell"><span class="gantt-bar bar-gray" style="--left: 52.9; --width: 4.3;"></span></td></tr>
+              <tr><td>M3 Feature Reduction</td><td>Person 3</td><td>3/14/24</td><td>3/20/24</td><td>6</td><td class="gantt-bar-cell"><span class="gantt-bar bar-gray" style="--left: 52.9; --width: 4.3;"></span></td></tr>
+              <tr><td>M3 Implementation &amp; Coding</td><td>Person 4</td><td>4/6/24</td><td>4/14/24</td><td>8</td><td class="gantt-bar-cell"><span class="gantt-bar bar-gray" style="--left: 69.6; --width: 5.8;"></span></td></tr>
+              <tr><td>M3 Results Evaluation</td><td>All</td><td>4/15/24</td><td>4/17/24</td><td>2</td><td class="gantt-bar-cell"><span class="gantt-bar bar-gray" style="--left: 76.1; --width: 1.4;"></span></td></tr>
+              <tr><td>M1–M3 Comparison</td><td>All</td><td>4/18/24</td><td>4/26/24</td><td>8</td><td class="gantt-bar-cell"><span class="gantt-bar bar-gray" style="--left: 78.3; --width: 5.8;"></span></td></tr>
+              <tr><td>Video Creation &amp; Recording</td><td>All</td><td>4/18/24</td><td>4/26/24</td><td>8</td><td class="gantt-bar-cell"><span class="gantt-bar bar-gray" style="--left: 78.3; --width: 5.8;"></span></td></tr>
+              <tr><td>Code Repo</td><td>All</td><td>4/18/24</td><td>4/26/24</td><td>8</td><td class="gantt-bar-cell"><span class="gantt-bar bar-gray" style="--left: 78.3; --width: 5.8;"></span></td></tr>
+              <tr><td>Final Report</td><td>All</td><td>4/18/24</td><td>5/17/24</td><td>30</td><td class="gantt-bar-cell"><span class="gantt-bar bar-gray" style="--left: 78.3; --width: 21.7;"></span></td></tr>
             </tbody>
           </table>
         </div>
