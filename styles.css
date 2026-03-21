@@ -1,4 +1,4 @@
-/* Machine Learning Proposal - Styles */
+/* UFC Fight Prediction — Midterm site */
 
 * {
   box-sizing: border-box;
@@ -153,22 +153,86 @@ main {
 }
 
 .preprocessing-section,
-.ml-section {
+.ml-section,
+.logistic-regression-section,
+.xgboost-section,
+.next-steps-section {
   margin-bottom: 2.5rem;
 }
 
 .preprocessing-section h2,
-.ml-section h2 {
+.ml-section h2,
+.logistic-regression-section h2,
+.xgboost-section h2,
+.next-steps-section h2 {
   font-size: 1.25rem;
   font-weight: 600;
   margin: 0 0 0.75rem 0;
   color: #111;
 }
 
+.logistic-regression-section h3,
+.xgboost-section h3 {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 1.25rem 0 0.5rem 0;
+  color: #111;
+}
+
 .preprocessing-section p,
-.ml-section p {
+.ml-section p,
+.logistic-regression-section p,
+.xgboost-section p,
+.next-steps-section p {
   margin: 0 0 0.5rem 0;
   color: #333;
+}
+
+.preprocessing-section ul,
+.logistic-regression-section ul,
+.xgboost-section ul {
+  margin: 0 0 0.75rem 0;
+  padding: 0 0 0 1.25rem;
+  list-style: none;
+}
+
+.preprocessing-section li,
+.logistic-regression-section li,
+.xgboost-section li {
+  margin-bottom: 0.35rem;
+}
+
+.weight-class-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.9rem;
+  margin: 0.75rem 0 1rem 0;
+}
+
+.weight-class-table th,
+.weight-class-table td {
+  border: 1px solid #d1d5db;
+  padding: 0.4rem 0.6rem;
+  text-align: left;
+}
+
+.weight-class-table thead th {
+  background: #f5f5f5;
+  font-weight: 600;
+}
+
+.midterm-figure {
+  margin: 1rem 0 1.25rem 0;
+  text-align: center;
+}
+
+.midterm-figure img {
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  background: #fff;
 }
 
 .gantt-section,

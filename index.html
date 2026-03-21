@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Machine Learning Proposal</title>
+  <title>UFC Fight Prediction — Midterm Report</title>
   <link rel="stylesheet" href="styles.css">
 </head>
 <body>
   <header>
-    <h1>Machine Learning Proposal</h1>
+    <h1>UFC Fight Prediction — Midterm Report</h1>
   </header>
   <main>
     <section class="report-additions">
@@ -54,27 +54,240 @@
 
 <section class="preprocessing-section">
   <h2>Data Preprocessing</h2>
-  <p>We will address missing values with scikit-learn’s SimpleImputer, dropping features with many missing fields and imputing medians for essential metrics to preserve sample integrity. We will use pandas.DataFrame operations for feature engineering, transforming the data into pairwise matchups and calculating differentials such as striking volume, takedown defense, and reach. To mitigate positional bias, we will symmetrize the data by duplicating each fight, swapping fighters, multiplying differential features by -1, and inverting the target variable. We will normalize variables with widely different ranges using StandardScaler for consistency in training.</p>
+  <p>When looking at our data, the first thing we realized was that one of our datasets,
+“ufc_fighters_avg” would not be a feasible dataset to use. It contains UFC fighters' average stats
+from their career (i.e. strike accuracy, takedowns, etc.) as of 2024. Thus, if we were training our
+model on this data, it would be using information that was from the “future”. For example, if we
+had a fighter that fought in 2020, 2022, and 2024, using their averages from the dataset to
+predict the 2020 and 2022 fights would use data from future fights that was not available at the
+actual time of the fight. As a result, we decided to use “ufc_event_fight_stats” which has fighter
+stats for fights dating back to 1994. After loading the data and exploring it we did a couple of
+things to process and clean the data. Primarily, we realized that a fighter with control time of
+0:00 was being represented as “NA” so we replaced those with “0”s to handle the missing
+values. We then dropped no contest fights from our dataset since these are not relevant to our
+goal and were deemed outliers. Next, we converted date of birth to type datetime and added a
+column “winner” that was encoded to have 1 if fighter 1 won and 0 if fighter 2 won. To handle
+categorical inputs like weight class, we encoded the weight class to an integer representation
+using the table below. Also, for stance, we created dummy variables that were 1, if the matchup
+was a certain combination of stances and 0 for the rest (i.e 1 for Orthodox v. Orthodox and 0 for
+Orthodox v. Southpaw and the rest of the possible combinations) which wraps up the initial
+cleaning process.</p>
+  <p>encodes `weight class` as follows:</p>
+  <table class="weight-class-table">
+    <thead>
+      <tr>
+        <th>Encoding</th>
+        <th>Men's</th>
+        <th>Women's</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>0</td><td>Flyweight</td><td>Flyweight</td></tr>
+      <tr><td>1</td><td>Bantamweight</td><td>Strawweight</td></tr>
+      <tr><td>2</td><td>Featherweight</td><td>Bantamweight</td></tr>
+      <tr><td>3</td><td>Lightweight</td><td>Featherweight</td></tr>
+      <tr><td>4</td><td>Welterweight</td><td>Other</td></tr>
+      <tr><td>5</td><td>Middleweight</td><td></td></tr>
+      <tr><td>6</td><td>Light Heavyweight</td><td></td></tr>
+      <tr><td>7</td><td>Heavyweight</td><td></td></tr>
+      <tr><td>8</td><td>Catch Weight</td><td></td></tr>
+      <tr><td>9</td><td>Open Weight</td><td></td></tr>
+      <tr><td>10</td><td>Other</td><td></td></tr>
+    </tbody>
+  </table>
+  <p>Because we are now using a dataset with only fight data, we had to calculate our own averages
+for fighters prefight. Essentially, if a fighter fought it in 2020, 2022, and 2024. Their 2022 fight
+should contain the values from the 2020 fight and the 2024 fight should use the averages from
+the 2020 and 2022 fights. To do this, we had to join “ufc_event_fight_stats” and “ufc_events” to
+get the chronological order of each fight. This ensured that only information available before a
+fight occurred would be used in prediction. We then calculated cumulative statistics for each
+fighter across their previous fights, including metrics such as strikes, knockdowns, takedowns,
+submissions, and control time. These cumulative values were shifted so that the statistics for
+each fight only included data from earlier fights. We also calculated each fighter’s prior record
+and experience, tracking cumulative wins, losses, and draws before each fight. Using these
+cumulative totals, we created pre-fight averages by dividing statistics by the number of previous
+fights. If a fighter had no prior fights, the averages were set to zero. We also added fighter
+attributes such as reach, height, stance (which we encoded), and date of birth, which allowed us
+to calculate the fighter’s age at the time of the fight. Then, we dropped fights where a fighter's
+age, stance, reach or height was unknown or they had less than 1 year of experience.</p>
+  <p>Next, we generated difference-based features representing the matchup between fighters by
+subtracting fighter 2’s values from fighter 1’s values (e.g., reach difference, age difference, and
+strike accuracy difference). After creating these features, we removed unnecessary columns
+such as fighter names, IDs, and event metadata, leaving a dataset of numeric features along
+with the encoded winner variable for model training in an attempt to reduce the number of
+features. We also realized that fighter 1 won 64.59% of the time. Since we did not want our
+model to be biased to fighter 1, we duplicated the data, switching the fighters for symmetry. This
+gets us to a starting point to train and test our first models.</p>
 </section>
 
-<section class="ml-section">
-  <h2>Machine Learning Algorithms</h2>
-  <p>We will use three supervised algorithms to predict a binary outcome. LogisticRegression will provide an interpretable baseline. RandomForestClassifier will train multiple decision trees on different subsets of data using majority voting to predict the winner. Our main model, XGBClassifier, builds trees sequentially to correct prior errors and applies L1 and L2 regularization to control complexity and improve performance. We apply supervised learning for predictive analytics, using linear classification as a baseline and tree-based models for final predictions.</p>
-</section>
-
-<section class="results-and-discussion">
-  <h2>Results and Discussion</h2>
-  <p>To evaluate our prediction model, we will use quantitative metrics for binary outcomes, probabilistic odds, and specific fight endings.</p>
-
+<section class="logistic-regression-section">
+  <h2>Logistic Regression</h2>
+  <p>Logistic Regression is a supervised machine learning model used for classification. For our UFC
+fight prediction model, we selected it as our baseline algorithm because it is good for
+determining binary classifications, it outputs a probabilistic value a specific fighter would win a
+bout, and it is fast and does not require much computational power to train and run.</p>
+  <p>For this project, we use it to predict whether Fighter 1 (class 0) or Fighter 2 (class 1) will win the
+matchup. Unlike more complex models, logistic regression allows us to easily examine feature
+coefficients to understand the relationship between our engineered features (such as age
+difference, reach difference, and strike accuracy difference) and the likelihood of a victory.
+Furthermore, rather than just outputting a strict win/loss classification, the logistic function maps
+the output to a probability between 0 and 1. This probabilistic output is particularly valuable in
+the context of sports predictions, as it provides a measure of confidence for each predicted
+matchup rather than a simple categorical guess.</p>
+  <h3>Implementation and Training</h3>
+  <p>We built the model using Python's scikit-learn library, and used a Pipeline to chain our
+preprocessed data into a valuable baseline machine learning model using StandardScaler and
+LogisticRegression. Because logistic regression is sensitive to the scale of the input data and
+our dataset contains variables with different ranges, we used StandardScaler to normalize the
+processed data before passing it to LogisticRegression.</p>
+  <p>The model was trained on the symmetrized dataset discussed in the preprocessing section. By
+duplicating the data and switching the fighters, we ensured the logistic regression model learned
+the underlying physical and statistical advantages rather than defaulting to a biased baseline
+that favors fighter 1 or 2.</p>
+  <h3>Model Analysis and Evaluation</h3>
+  <p>To evaluate the model's performance beyond standard accuracy, we calculated several
+classification metrics and analyzed the probabilistic outputs.The baseline logistic regression
+model yielded the following results:</p>
+  <figure class="midterm-figure">
+    <img src="images/midterm_fig01.png" alt="Validation and test metrics table: accuracy, precision, recall, f1, log_loss" width="431" height="77" loading="lazy" decoding="async">
+  </figure>
+  <figure class="midterm-figure">
+    <img src="images/midterm_fig02.png" alt="Test confusion matrix" width="590" height="490" loading="lazy" decoding="async">
+  </figure>
+  <p>The accuracy, precision, recall, f1 score and confusion matrix confirms a balanced performance.
+The model correctly predicted 665 true positives (Fighter 1 wins) and 665 true negatives
+(Fighter 2 wins). It also produced the same amount of false positives and false negatives (403),
+where the model incorrectly chose the bout outcome. This balanced error is a direct result of our
+dataset duplication and symmetrization step during preprocessing, ensuring the model doesn't
+inherently favor one side and also .</p>
+  <p>To evaluate the quality of the model's predicted probabilities, we utilized Log-Loss
+(Cross-Entropy Loss):</p>
   <ul>
-    <li><strong>Binary Winner/Loser:</strong> Evaluate win/loss predictions using accuracy (Total Correct / Total Predictions) as a baseline.</li>
-    <li><strong>Winning Probability Projections:</strong> Use Brier Score and Log Loss to assess probability calibration against true outcomes and benchmark against closing odds.</li>
-    <li><strong>Method and Timing of Victory:</strong> Apply Mean Absolute Error to predicted finish times and Root Mean Squared Error to projected decision scorecards.</li>
+    <li>● Log-Loss: We recorded a Log-Loss of 0.658194. Because a completely random binary
+guess yields a baseline log-loss of approximately 0.693, a score of 0.658194
+demonstrates that the model has successfully learned underlying patterns and is
+assigning higher probabilities to the correct outcomes. While it establishes a solid
+baseline, the log-loss score leaves lots of room for improvement that we aim to capture
+with more complex algorithms.</li>
   </ul>
+  <p>Finally, to better understand where our model excels and where it struggles, we analyzed the
+test accuracy across different bins (all equally sized) of our top features, where a bin is a range
+of values used to group our continuous values. Instead of relying solely on a single global
+accuracy score, we segmented the test data based on the magnitude of the difference between
+fighters for key metrics.</p>
+  <figure class="midterm-figure">
+    <img src="images/midterm_fig03.png" alt="Test accuracy across bins of top features" width="932" height="547" loading="lazy" decoding="async">
+  </figure>
+  <p>The results from grouping these features reveal an interesting, split pattern depending on the
+type of statistic. For features like age (diff_fighter_dob) and ground game (diff_ground_atts), the
+model behaves exactly as expected: when there is a massive gap between the fighters, the
+model easily picks the winner, but when they are evenly matched near zero, the accuracy drops.
+However, the striking metrics (total strikes or body strikes) show the exact opposite trend. For
+these features, the model is actually most accurate when the fighters have very similar historical
+striking numbers. When there are massive differences in striking, the model's accuracy drops.
+This could be due to differences in fighter styles which are historically harder matchups to
+predict. Overall, this shows that our logistic regression algorithm is highly responsive to the
+magnitude of the differences between fighters, recognizing that mismatches in age are strong
+predictors of victory, while extreme differences in striking volume make fights harder to call.</p>
+</section>
 
-  <p>Our primary goal is to develop a UFC prediction model that performs comparable to betting market favorites. We will utilize tree models like XGBoost, Random Forest, and Logistic Regression. These algorithms require less computing power than neural nets, ensuring we remain environmentally conscious.</p>
+<section class="xgboost-section">
+  <h2>XGBoost</h2>
+  <p>XGBoost is a supervised machine learning algorithm built on the gradient boosted decision tree
+model. For our UFC fight prediction model, we decided to select it as an upgrade from our
+logistic regression baseline because it captures the non-linear relationships between features.
+Additionally, it’s robust to outliers and does not require feature scaling, and even includes built-in
+regularization that prevents overfitting. Like logistic regression, it produces class probabilities
+rather than strict binary predictions, preserving the probabilistic value of our model's output.</p>
+  <p>For this project, we use it to predict whether Fighter 1 (class 0) or Fighter 2 (class 1) will win the
+matchup. Unlike logistic regression, which assumes a linear boundary between classes,
+XGBoost builds an ensemble of decision trees sequentially, where each new tree corrects the
+residual errors of the previous one. This allows the model to detect complex, higher-order
+interactions between our engineered features — such as combined disadvantages in reach,
+age, and striking accuracy — that a linear model may miss.</p>
+  <h3>Implementation and Training</h3>
+  <p>We built the model using Python's xgboost library with the XGBClassifier interface. Because
+XGBoost is a tree-based method, it is invariant to the scale of input features, so no
+standardization step was required. The model was trained on the same symmetrized dataset
+used for logistic regression, where duplicating fights and swapping fighters ensures the model
+learns underlying physical and statistical advantages rather than a positional bias toward Fighter
+1 or Fighter 2.</p>
+  <p>To find strong starting parameters, we used Optuna to run 100 trials of Bayesian
+hyperparameter optimization over the search space for n_estimators, learning_rate, max_depth,
+subsample, and colsample_bytree. However, the hand-tuned baseline parameters consistently
+matched or outperformed the Optuna results on the validation set, so we proceeded with those.</p>
+  <p>The final model used the following configuration:</p>
+  <ul>
+    <li>● n_estimators=500 — maximum number of trees to build</li>
+    <li>● learning_rate=0.05 — how aggressively each tree corrects the last</li>
+    <li>● max_depth=5 — limits tree complexity to reduce overfitting</li>
+    <li>● subsample=0.649 — trains each tree on a random 65% of rows</li>
+    <li>● colsample_bytree=0.649 — trains each tree on a random 65% of features</li>
+    <li>● early_stopping_rounds=20 — halts training if validation loss doesn't improve for 20
+consecutive rounds</li>
+  </ul>
+  <p>Early stopping triggered at tree 74 out of the 500 maximum, at which point the validation
+log-loss plateaued. This prevented unnecessary training and overfitting to the training set.</p>
+  <h3>Model Analysis and Evaluation</h3>
+  <p>We evaluated the model's performance by calculating classification metrics on the held-out test
+set and analyzed feature importances to understand what the model learned. The accuracy,
+precision, recall, and F1 scores confirm a balanced performance across both classes, with no
+meaningful bias toward predicting Fighter 1 or Fighter 2. This is again a direct result of our
+dataset symmetrization step during preprocessing. The model achieved 63.90% test accuracy, a
+modest improvement over the logistic regression baseline, demonstrating that the ensemble
+approach is capturing some non-linear signal that a linear model cannot.</p>
+  <p>To further assess prediction quality, we compared training versus validation log-loss throughout
+training. The training log-loss converged to 0.575 while the validation log-loss settled at 0.653.
+The gap between these two values indicates a degree of overfitting. The model learned the
+training data slightly better than it generalized but our early stopping prevented this from
+growing further. The validation log-loss of 0.653 remains below the random-guess baseline of
+~0.693, confirming the model has extracted real predictive signal from the data.</p>
+  <p>Finally, we analyzed feature importance using information gain, which measures how much
+each feature reduces uncertainty across all the splits it is used in. Unlike logistic regression
+coefficients, which only capture linear contributions, XGBoost's importance reflects a feature's
+overall usefulness across all trees, including interactions with other features. The top 20 most
+important features are visualized in the feature importance plot, providing insight into which
+physical and statistical differences between fighters are most predictive of fight outcomes.</p>
+  <figure class="midterm-figure">
+    <img src="images/midterm_fig04.png" alt="Top 20 most important UFC stats (XGBoost), information gain" width="971" height="455" loading="lazy" decoding="async">
+  </figure>
+</section>
 
-  <p>We expect to achieve an accuracy of at least 60%, an improvement over a random guess baseline. Although this is below the 65%-68% win rate of Vegas favorites, we believe it’s competitive for a model relying exclusively on publicly available fighting metrics and match stats.</p>
+<section class="next-steps-section">
+  <h2>Next Steps</h2>
+  <p>Moving forward, our main goal is to improve accuracy in our existing models and implement a
+new model. To improve accuracy in both models, we have a few feature engineering and data
+preprocessing tasks to do. First, we need to address the question of Experience. Our
+Experience feature is a count of how many fights a fighter has participated in up to that fight. We
+have ~1800 fights where at least one fighter has 0 Experience. This is a potential problem
+because fighters with no experience have no cumulative stats of which the averages (and thus
+differentials) are calculated. There are also another ~1800 fights with at least one fighter that
+has 1 Experience. We need to try training our models with and without these fights to see which
+yields better results. We also have a potential problem around fighter’s ages. We currently have
+an age differential column (f1_age - f2_age). This may not be optimal because it only considers
+the difference in age. We plan to try training our models with keeping f1_age and f2_age as
+features. This will likely work well for our tree based models. We are not sure how the Logistic
+Regression model will handle it. We also need to fix our encoding for fighter stances as our
+current implementation may confuse the models.</p>
+  <p>Beyond addressing the experience and age issues, we plan to explore additional feature
+engineering improvements to boost model performance. One area of focus is refining our stance
+encoding, as our current dummy variable approach may be introducing redundancy or
+misrepresenting certain matchup combinations. We also plan to investigate interaction features
+— for example, combining reach differential with strike accuracy differential — since some
+physical advantages may only become predictive in the presence of other advantages. For
+Logistic Regression, we will experiment with L1 (Lasso) regularization, which can zero out less
+informative features and produce a sparser, more interpretable model. For XGBoost, we will
+conduct more hyperparameter tuning.</p>
+  <p>In addition to improving our existing models, we plan to implement a Random Forest classifier
+as our third model. Random Forest is an ensemble learning method that builds a large number
+of decision trees and outputs the majority vote across all trees for classification. This approach
+is well-suited for our dataset because it naturally handles non-linear relationships between
+features, is robust to outliers, and reduces the overfitting risk that comes with individual decision
+trees. Unlike Logistic Regression, Random Forest does not require feature scaling and can
+capture complex interactions between fighter attributes without explicit interaction terms. It also
+provides built-in feature importance scores, giving us another lens to interpret which pre-fight
+statistics are most predictive of fight outcomes. We will train and evaluate it using the same
+metrics as our existing models to allow for direct comparison across all three approaches.</p>
 </section>
 
       <section class="references-section">
@@ -165,15 +378,15 @@
           <thead>
             <tr>
               <th>Name</th>
-              <th>Proposal Contributions</th>
+              <th>Contributions</th>
             </tr>
           </thead>
           <tbody>
-            <tr><td>Connor Mcilhinney</td><td>Finding datasets, created GitHub pages, Literature Review, Idea Generation, problem statement</td></tr>
+            <tr><td>Connor Mcilhinney</td><td>Data preprocessing and feature pipeline work, finding datasets, GitHub Pages, Literature Review, Idea Generation, problem statement</td></tr>
             <tr><td>Max Pargman</td><td>Methods and Data Processing, solution brainstorming, logistics handling</td></tr>
-            <tr><td>Andrew Mattei</td><td>Quantitative analysis, finding data, idea generation, ethical considerations</td></tr>
-            <tr><td>Rajan Kadaba</td><td>Slideshow creation and review, idea generation, finding data, motivation</td></tr>
-            <tr><td>John Tillman</td><td>Created GitHub repo, results and discussion, organization, solution brainstorming</td></tr>
+            <tr><td>Andrew Mattei</td><td>Programmed logistic regression model and evaluation metrics for it, wrote that section of the report</td></tr>
+            <tr><td>Rajan Kadaba</td><td>Data cleaning and feature engineering write-up, helped with feature engineering logic</td></tr>
+            <tr><td>John Tillman</td><td>Primary email contact with course mentor, created GitHub repo, results and discussion, organization, solution brainstorming</td></tr>
           </tbody>
         </table>
       </section>
