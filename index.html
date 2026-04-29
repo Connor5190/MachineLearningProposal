@@ -94,10 +94,10 @@
   <p>The model was trained on the symmetrized dataset discussed in the preprocessing section. By duplicating the data and switching the fighters, we ensured the logistic regression model learned the underlying physical and statistical advantages rather than defaulting to a biased baseline that favors fighter 1 or 2. This was run on three datasets: base, exp1, and exp2.</p>
   <h3>Model Analysis and Evaluation</h3>
   <p>To evaluate the model's performance beyond standard accuracy, we calculated several classification metrics and analyzed the probabilistic outputs. The baseline logistic regression model yielded the following results on the three datasets: base, exp1, and exp2.</p>
-  <figure class="final-figure">
+  <figure class="final-figure final-figure--narrow">
     <img src="images/final/LR_1.png" alt="Validation and test metrics table across base, exp1, exp2 datasets: accuracy, precision, recall, f1, log_loss, roc_auc" loading="lazy" decoding="async">
   </figure>
-  <figure class="final-figure">
+  <figure class="final-figure final-figure--wide">
     <img src="images/final/LR_2.png" alt="Test confusion matrices for base, exp1, and exp2 datasets" loading="lazy" decoding="async">
   </figure>
   <p>The accuracy, precision, recall, f1 scores and confusion matrices confirm a balanced performance. For all datasets, the model correctly predicted the same amount of true positives and true negatives as well as false positives and false negatives. In the case of the base dataset, it was 756 true positives (Fighter 1 wins) and 756 true negatives (Fighter 2 wins) and 436 false positives and 436 false negatives, where the model incorrectly chose the bout outcome. This balanced error is a direct result of our dataset duplication and symmetrization step during preprocessing, ensuring the model doesn't inherently favor one side.</p>
@@ -114,16 +114,16 @@
     <li><strong>The Wager &amp; Payout:</strong> We used a flat betting system, wagering exactly $10 on every qualifying fight. Losing bets simply lose the $10, while winning bets pay out strictly according to their standard American odds.</li>
   </ul>
   <p>The results of this simulation are shown below. Interestingly, this targeted strategy proved to be marginally effective on the testing data. While a positive return here does not guarantee long-term profitability, especially given that the bookmakers' overall log-loss is still superior, it provides promising evidence that our model is capable of finding localized value in UFC betting markets.</p>
-  <figure class="final-figure">
+  <figure class="final-figure final-figure--narrow">
     <img src="images/final/LR_3.png" alt="Betting simulation results: 646 matches analyzed, 469 bets placed, $4690 wagered, $170.74 profit, 3.64% ROI" loading="lazy" decoding="async">
   </figure>
   <p>To better understand where our model excels and where it struggles, we analyzed the test accuracy across different bins (all equally sized) of our top features, where a bin is a range of values used to group our continuous values. Instead of relying solely on a single global accuracy score, we segmented the test data based on the magnitude of the difference between fighters for key metrics.</p>
-  <figure class="final-figure">
+  <figure class="final-figure final-figure--wide">
     <img src="images/final/LR_4.png" alt="Test Feature-Focused Accuracy: accuracy across bins of top features for base, exp1, and exp2 datasets" loading="lazy" decoding="async">
   </figure>
   <p>The results from grouping these features reveal an interesting, split pattern depending on the type of statistic. For features like age (diff_fighter_dob) and takedown ability (diff_takedowns), the model behaves exactly as expected: when there is a massive gap between the fighters, the model easily picks the winner, but when they are evenly matched near zero, the accuracy drops. This shows that our logistic regression algorithm is highly responsive to the magnitude of the differences between fighters for various different features.</p>
   <p>Additionally, we can see which features are the most directly and indirectly proportional to a fighter's success in a bout. This is seen by analyzing which features have the highest coefficients in the logistic regression algorithm. Some of these features seem intuitive, like difference in control time leading to a better chance at winning, while others aren't very intuitive, like a fighter's stance, which is interesting to see.</p>
-  <figure class="final-figure">
+  <figure class="final-figure final-figure--wide">
     <img src="images/final/LR_5.png" alt="Top positive and negative logistic regression coefficients" loading="lazy" decoding="async">
   </figure>
   <p>Finally we can compare the ROC curve of each of the datasets. The curve visualizes our logistic regression model's ability to distinguish between winning and losing fighters across various probability thresholds. For reference, a 0.5 area under the curve for an ROC curve means that the probability is 50/50, a coinflip.</p>
@@ -158,7 +158,7 @@
     <li>early_stopping_rounds=20 — halts training if validation loss fails to improve for 20 consecutive rounds</li>
   </ul>
   <p>Early stopping triggered at tree 136 for the General model, tree 93 for Exp1, and tree 105 for Exp2, preventing unnecessary computation and overfitting beyond the point of diminishing returns.</p>
-  <figure class="final-figure">
+  <figure class="final-figure final-figure--wide">
     <img src="images/final/XG_1.png" alt="XGBoost Feature Importance by Model: top 10 features for General, Exp1, and Exp2 datasets" loading="lazy" decoding="async">
   </figure>
   <p>Across all three models, career-level differentials such as experience, wins, reach, and age consistently rank among the most predictive features, reflecting that a fighter's track record and physical attributes carry strong predictive weight regardless of the dataset used. The Exp1 and Exp2 models notably lean more on the last-4-fight rolling averages, particularly differential striking and control time over recent fights — these are unavailable in the General model since debut fighters have no fight history to draw from, making recency features more informative as experience thresholds increase.</p>
@@ -180,7 +180,7 @@
   </table>
   <p>Exp1 achieved the highest test accuracy at 64.89%, a meaningful improvement over both the General model and our logistic regression baseline. This suggests that filtering out debut fighters whose historical statistics carry no real signal provides a cleaner learning environment even at the cost of a smaller dataset. The General model's 63.90% test accuracy confirms that including fighters with no prior history adds noise that slightly dampens performance.</p>
   <p>Exp2 presents a more nuanced result with its validation accuracy of 64.52% — the highest across all three models — but its test accuracy drops to 60.79%, suggesting the model overfit slightly to the validation set during training. This likely occurred due to the smaller dataset size of 5,212 training fights. While filtering to fighters with at least two fights produces higher-quality features, the reduced data volume makes it harder to generalize.</p>
-  <figure class="final-figure">
+  <figure class="final-figure final-figure--wide">
     <img src="images/final/XG_2.png" alt="XGBoost confusion matrices for General, Exp1, and Exp2 datasets" loading="lazy" decoding="async">
   </figure>
   <p>The confusion matrices confirm balanced performance across both classes for all three models, with no meaningful bias toward predicting Fighter 1 or Fighter 2 — a direct result of the dataset symmetrization step. For the General model specifically, the model correctly identified Fighter 1 winning 672 times and Fighter 2 winning 693 times out of the test set, with misclassifications nearly symmetric at 375 and 396, indicating the model struggles equally in both directions rather than systematically favoring one side.</p>
@@ -199,11 +199,11 @@
   <p>We built the model using Python's scikit-learn library and trained a RandomForestClassifier with hyperparameter tuning through RandomizedSearchCV. The model was trained on the symmetrized datasets described in preprocessing. By duplicating each fight and swapping fighter positions, the model learns true statistical and physical advantages instead of inheriting positional bias for Fighter 1 or Fighter 2. We ran this model on all three dataset configurations: base, exp1, and exp2. We also ensured metadata columns were excluded from modeling features (including mirrored/index identifiers such as is_mirror, fight_id, and fight index-style columns).</p>
   <h3>Model Analysis and Evaluation</h3>
   <p>To evaluate Random Forest beyond accuracy, we analyzed accuracy, precision, recall, F1, log-loss, ROC-AUC, confusion matrices, ROC curves, and feature importance. The metrics table below shows train, validation, and test performance:</p>
-  <figure class="final-figure">
+  <figure class="final-figure final-figure--narrow">
     <img src="images/final/RF_3.png" alt="Random Forest metrics table: accuracy, precision, recall, f1, log_loss, roc_auc for train, validation, and test sets" loading="lazy" decoding="async">
   </figure>
   <p>For the exp2 dataset, the model produced a validation accuracy of 0.659946, precision of 0.659517, recall of 0.661290, and an F1-score of 0.660403 on 744 validation fights. This indicates balanced predictive behavior across both classes, with nearly equal treatment of Fighter 1 and Fighter 2 outcomes. The confusion matrix below confirms this symmetry on the test set.</p>
-  <figure class="final-figure">
+  <figure class="final-figure final-figure--narrow">
     <img src="images/final/RF_1.png" alt="Test confusion matrix for Random Forest showing 455 true negatives, 463 true positives, 291 false positives, and 283 false negatives" loading="lazy" decoding="async">
   </figure>
   <p>The ROC curve below illustrates a notable train-validation-test gap. The train AUC of 0.9693 compared to a validation AUC of 0.7008 and test AUC of 0.6767 reveals significant overfitting on the training data. Despite this, the test AUC remains well above the 0.5 random baseline, confirming meaningful predictive signal. The large train-to-test gap suggests the model memorized training patterns and would benefit from further regularization through stronger constraints on tree depth or minimum samples per leaf.</p>

@@ -156,6 +156,8 @@ main {
 .ml-section,
 .logistic-regression-section,
 .xgboost-section,
+.random-forest-section,
+.model-comparisons-section,
 .next-steps-section {
   margin-bottom: 2.5rem;
 }
@@ -164,6 +166,8 @@ main {
 .ml-section h2,
 .logistic-regression-section h2,
 .xgboost-section h2,
+.random-forest-section h2,
+.model-comparisons-section h2,
 .next-steps-section h2 {
   font-size: 1.25rem;
   font-weight: 600;
@@ -172,7 +176,8 @@ main {
 }
 
 .logistic-regression-section h3,
-.xgboost-section h3 {
+.xgboost-section h3,
+.random-forest-section h3 {
   font-size: 1.05rem;
   font-weight: 600;
   margin: 1.25rem 0 0.5rem 0;
@@ -183,6 +188,8 @@ main {
 .ml-section p,
 .logistic-regression-section p,
 .xgboost-section p,
+.random-forest-section p,
+.model-comparisons-section p,
 .next-steps-section p {
   margin: 0 0 0.5rem 0;
   color: #333;
@@ -190,7 +197,8 @@ main {
 
 .preprocessing-section ul,
 .logistic-regression-section ul,
-.xgboost-section ul {
+.xgboost-section ul,
+.random-forest-section ul {
   margin: 0 0 0.75rem 0;
   padding: 0 0 0 1.25rem;
   list-style: none;
@@ -198,7 +206,8 @@ main {
 
 .preprocessing-section li,
 .logistic-regression-section li,
-.xgboost-section li {
+.xgboost-section li,
+.random-forest-section li {
   margin-bottom: 0.35rem;
 }
 
@@ -238,15 +247,25 @@ main {
 .final-figure {
   margin: 1rem 0 1.25rem 0;
   text-align: center;
+  overflow: hidden;
 }
 
 .final-figure img {
-  max-width: 100%;
+  max-width: 75%;
   height: auto;
-  vertical-align: middle;
+  display: block;
+  margin: 0 auto;
   border: 1px solid #e5e7eb;
   border-radius: 4px;
   background: #fff;
+}
+
+.final-figure--wide img {
+  max-width: 100%;
+}
+
+.final-figure--narrow img {
+  max-width: 55%;
 }
 
 .gantt-section,
