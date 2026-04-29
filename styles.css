@@ -235,6 +235,20 @@ main {
   background: #fff;
 }
 
+.final-figure {
+  margin: 1rem 0 1.25rem 0;
+  text-align: center;
+}
+
+.final-figure img {
+  max-width: 100%;
+  height: auto;
+  vertical-align: middle;
+  border: 1px solid #e5e7eb;
+  border-radius: 4px;
+  background: #fff;
+}
+
 .gantt-section,
 .contribution-section {
   margin-bottom: 2.5rem;
